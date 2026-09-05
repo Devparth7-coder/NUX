@@ -1,0 +1,85 @@
+# ─────────────────────────────────────────────────────────────
+# NEXUS on Render
+#
+# Render runs NEXUS as a long-lived Node process, which is a closer fit than
+# serverless for an agent pipeline: background runs are never frozen when the
+# HTTP response ends, uploaded documents can live on a persistent disk, and the
+# queue worker is a scheduled job instead of an HTTP endpoint.
+#
+# Deploy: Dashboard → New → Blueprint → connect this repo.
+# ─────────────────────────────────────────────────────────────
+
+databases:
+  - name: nexus-db
+    databaseName: nexus
+    user: nexus
+    # pgvector is available on Render Postgres 13+ (`CREATE EXTENSION vector;`)
+    # if you later move retrieval into SQL. NEXUS does not need it: embeddings
+    # are stored as JSON and ranked in application code.
+    postgresMajorVersion: "16"
+    plan: starter
+    ipAllowList: [] # only allow Render-internal connections
+
+services:
+  # ── Web service ─────────────────────────────────────────────
+  - type: web
+    name: nexus
+    runtime: node
+    plan: starter
+    region: frankfurt
+    branch: main
+    autoDeploy: true
+    healthCheckPath: /api/health
+    buildCommand: npm install && npm run build
+    # Applies the schema to Postgres before each deploy goes live.
+    preDeployCommand: npm run db:push
+    startCommand: npm run start
+    # Uploaded documents and generated artifacts live here; survives deploys.
+    disk:
+      name: nexus-storage
+      mountPath: /var/data
+      sizeGB: 10
+    envVars:
+      - key: NEXUS_DB_PROVIDER
+        value: postgresql
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nexus-db
+          property: connectionString
+      - key: NEXUS_SESSION_SECRET
+        generateValue: true
+      - key: NEXUS_STORAGE_DRIVER
+        value: local
+      - key: NEXUS_STORAGE_DIR
+        value: /var/data/nexus-storage
+      # "inline" runs jobs inside the request. Switch to "queue" to have the
+      # cron job below drain them instead.
+      - key: NEXUS_JOB_DRIVER
+        value: inline
+      # Leave as "mock" to run the honest DEMO MODE. Set to "openai" and fill in
+      # OPENAI_API_KEY below to run against a live model.
+      - key: NEXUS_AI_PROVIDER
+        value: mock
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: NODE_VERSION
+        value: "22"
+
+  # ── Queue worker (only needed when NEXUS_JOB_DRIVER=queue) ──
+  - type: cron
+    name: nexus-worker
+    runtime: node
+    schedule: "*/10 * * * *" # UTC; runs a single drain and exits
+    buildCommand: npm install
+    startCommand: npm run worker
+    envVars:
+      - key: NEXUS_DB_PROVIDER
+        value: postgresql
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nexus-db
+          property: connectionString
+      - key: NEXUS_JOB_DRIVER
+        value: queue
+      - key: NODE_VERSION
+        value: "22"
