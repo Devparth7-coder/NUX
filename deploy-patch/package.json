@@ -1,0 +1,57 @@
+{
+  "name": "nexus",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NEXUS \u2014 Your digital world. One intelligent system.",
+  "scripts": {
+    "build": "node scripts/prisma.mjs generate && node scripts/build.mjs",
+    "db:push": "node scripts/prisma.mjs db push --skip-generate",
+    "db:reset": "rm -f prisma/dev.db prisma/dev.db-journal && npm run db:push && tsx prisma/seed.ts",
+    "db:seed": "tsx prisma/seed.ts",
+    "dev": "next dev -H 0.0.0.0 -p ${PORT:-3000}",
+    "prisma": "node scripts/prisma.mjs",
+    "setup": "npm run db:push && tsx prisma/seed.ts",
+    "start": "node scripts/prisma.mjs generate && next start -H 0.0.0.0 -p ${PORT:-3000}",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "worker": "tsx scripts/worker.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "@tanstack/react-query": "^5.102.8",
+    "adm-zip": "^0.5.16",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.43.0",
+    "lucide-react": "^1.41.0",
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^3.4.1",
+    "zod": "^3.25.76",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.8",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "16.3.4",
+    "postcss": "^8.4.49",
+    "prisma": "^6.19.3",
+    "tailwindcss": "^3.4.19",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}
