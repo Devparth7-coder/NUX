@@ -1,0 +1,282 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   NEXUS design system
+   near-black · deep navy · charcoal · electric blue · subtle violet
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --nexus-void: #06070a;
+  --nexus-bg: #08090d;
+  --nexus-navy: #0b0e17;
+  --nexus-surface-1: #0e1119;
+  --nexus-surface-2: #12151f;
+  --nexus-surface-3: #171b26;
+  --nexus-charcoal: #1c2029;
+  --nexus-line: rgba(255, 255, 255, 0.07);
+  --nexus-line-strong: rgba(255, 255, 255, 0.13);
+  --nexus-text: #e8eaf0;
+  --nexus-text-dim: #a5acbd;
+  --nexus-text-mute: #6f7688;
+  --nexus-blue: #3b82f6;
+  --nexus-blue-bright: #5b9dff;
+  --nexus-violet: #8b5cf6;
+  --nexus-emerald: #34d399;
+  --nexus-amber: #f59e0b;
+  --nexus-rose: #f472b6;
+  --nexus-red: #ef4444;
+  --nexus-cyan: #22d3ee;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+}
+
+@theme inline {
+  --color-void: var(--nexus-void);
+  --color-bg: var(--nexus-bg);
+  --color-navy: var(--nexus-navy);
+  --color-surface-1: var(--nexus-surface-1);
+  --color-surface-2: var(--nexus-surface-2);
+  --color-surface-3: var(--nexus-surface-3);
+  --color-charcoal: var(--nexus-charcoal);
+  --color-line: var(--nexus-line);
+  --color-line-strong: var(--nexus-line-strong);
+  --color-ink: var(--nexus-text);
+  --color-dim: var(--nexus-text-dim);
+  --color-mute: var(--nexus-text-mute);
+  --color-accent: var(--nexus-blue);
+  --color-accent-bright: var(--nexus-blue-bright);
+  --color-violet: var(--nexus-violet);
+  --color-emerald: var(--nexus-emerald);
+  --color-amber: var(--nexus-amber);
+  --color-rose: var(--nexus-rose);
+  --color-red: var(--nexus-red);
+  --color-cyan: var(--nexus-cyan);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+* {
+  border-color: var(--nexus-line);
+}
+
+html,
+body {
+  background: var(--nexus-bg);
+  color: var(--nexus-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-feature-settings: "cv02", "cv03", "cv04";
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.32);
+}
+
+/* Scrollbars ---------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Focus --------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid rgba(91, 157, 255, 0.75);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Utilities ----------------------------------------------------------------- */
+@utility panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.028) 0%, rgba(255, 255, 255, 0) 42%),
+    var(--nexus-surface-1);
+  border: 1px solid var(--nexus-line);
+  border-radius: var(--radius);
+}
+
+@utility panel-raised {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 55%),
+    var(--nexus-surface-2);
+  border: 1px solid var(--nexus-line);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -28px rgba(0, 0, 0, 0.9);
+}
+
+@utility hairline {
+  border-color: var(--nexus-line);
+}
+
+@utility glow-accent {
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35), 0 12px 40px -18px rgba(59, 130, 246, 0.55);
+}
+
+@utility text-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #b9c2d6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility grid-backdrop {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Animations ---------------------------------------------------------------- */
+@keyframes nexus-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes nexus-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(240%);
+  }
+}
+
+@keyframes nexus-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes nexus-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pulse-soft {
+  animation: nexus-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.animate-sweep {
+  animation: nexus-sweep 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.animate-ring {
+  animation: nexus-ring 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.animate-fade-up {
+  animation: nexus-fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-soft,
+  .animate-sweep,
+  .animate-ring,
+  .animate-fade-up {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Markdown rendering -------------------------------------------------------- */
+.prose-nexus {
+  color: var(--nexus-text-dim);
+  font-size: 14px;
+  line-height: 1.75;
+}
+.prose-nexus h1,
+.prose-nexus h2,
+.prose-nexus h3 {
+  color: var(--nexus-text);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 1.4em 0 0.6em;
+}
+.prose-nexus h1 {
+  font-size: 22px;
+}
+.prose-nexus h2 {
+  font-size: 17px;
+}
+.prose-nexus h3 {
+  font-size: 15px;
+}
+.prose-nexus p {
+  margin: 0.75em 0;
+}
+.prose-nexus ul,
+.prose-nexus ol {
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+}
+.prose-nexus li {
+  margin: 0.3em 0;
+}
+.prose-nexus code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.prose-nexus table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 13px;
+}
+.prose-nexus th,
+.prose-nexus td {
+  border: 1px solid var(--nexus-line);
+  padding: 8px 10px;
+  text-align: left;
+}
+.prose-nexus th {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--nexus-text);
+}
+.prose-nexus strong {
+  color: var(--nexus-text);
+  font-weight: 600;
+}
+.prose-nexus hr {
+  border: none;
+  border-top: 1px solid var(--nexus-line);
+  margin: 1.6em 0;
+}
